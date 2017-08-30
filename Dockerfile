@@ -8,6 +8,6 @@ WORKDIR $HOME/app
 
 RUN npm install
 
-EXPOSE 8888
+EXPOSE 8080
 
 
