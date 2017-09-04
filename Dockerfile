@@ -2,12 +2,13 @@ FROM node:8
 
 ENV HOME=/home/app
 
-COPY app/package.json app/index.js $HOME/app/
+WORKDIR $HOME
 
-WORKDIR $HOME/app
+COPY app/package.json app/index.js $HOME/
+
 
 RUN npm install
 
 EXPOSE 8080
 
-
+CMD ["npm","start"]

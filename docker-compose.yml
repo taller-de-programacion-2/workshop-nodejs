@@ -1,5 +1,0 @@
-workshop-nodejs-step1:
-  build: .
-  command: npm start
-  volumes:
-    - .:/home/app

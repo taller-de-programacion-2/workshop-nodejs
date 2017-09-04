@@ -4,8 +4,7 @@
   "description": "Step 1",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
-    "test": "test"
+    "start": "node index.js"
   },
   "keywords": [
     "nodejs"
