@@ -1,18 +1,20 @@
 const Rules = require('../services/rules-service');
 
-
-exports.test = function(req, res) {
-	TVShow.find(function(err, tvshows) {
-    if(err) res.send(500, err.message);
-
-    console.log('GET /tvshows')
-		res.status(200).jsonp(tvshows);
-	});
-};
-
 exports.executeRules = (req, res) => {
-  Rules.execute()
-  .then((result) => {
-  	res.send(result)
-  })
+	var args = {
+	    "userIP": "27.3.4.5",
+	    "name":"user4",
+	    "application":"MOB2",
+	    "userLoggedIn":true,
+	    "transactionTotal":600,
+	    "cardType":"Credit Card",
+	};
+	Rules.execute(args)
+		.then((result) => {
+	  		res.send(result)
+	  	})
+}
+
+exports.getRules = (req, res) => {
+  	res.send(Rules.getRules())
 }

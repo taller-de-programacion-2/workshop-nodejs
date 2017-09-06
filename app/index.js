@@ -15,7 +15,8 @@ var rulesRouter = express.Router();
 
 // Routing
 rulesRouter.route('/rules')
-  .get(rulesController.executeRules)
+  .get(rulesController.getRules)
+  .post(rulesController.executeRules)
 
 app.use("/api",rulesRouter);
 

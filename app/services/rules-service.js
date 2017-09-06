@@ -25,8 +25,8 @@ var fact = {
 };
 
 
-var aplicar = (resolve) => {
-	console.log("Calling aplicar");
+var aplicar = (args, resolve) => {
+	console.log("Calling aplicar ",args);
 	var R = new RuleEngine(rules);
 	//Now pass the fact on to the rule engine for results
 	R.execute(fact,function(result){ 
@@ -41,14 +41,17 @@ var aplicar = (resolve) => {
 
 module.exports = {
 	
-	execute: () => {
+	execute: (args) => {
 		console.log("Calling execute");
 		var promise = new Promise((resolve, reject) => {
 			console.log("Calling promise");
-			aplicar(resolve)
+			aplicar(args,resolve)
 		})
 
 		return promise;
+	},
+	getRules: () => {
+		return fact;
 	}
 
 }
