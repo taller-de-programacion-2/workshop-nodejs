@@ -1,7 +1,7 @@
 'use strict';
 
 const express = require('express');
-const rulesController = require('./controllers/rules-controller.js');
+const rulesController = require('controllers/rules-controller');
 
 // Constants
 const PORT = 8080;

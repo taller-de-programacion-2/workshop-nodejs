@@ -2,7 +2,7 @@ FROM node:boron
 
 WORKDIR /home/app
 
-COPY app/package.json app/index.js app/rules.js ./
+COPY app/* ./
 
 RUN npm install
 

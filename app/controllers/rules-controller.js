@@ -1,8 +1,8 @@
 //GET - Return all tvshows in the DB
-const Rules = require('./rules');
+const Rules = require('../services/rules-services');
 
 
-exports.executeRules = function(req, res) {
+exports.test = function(req, res) {
 	TVShow.find(function(err, tvshows) {
     if(err) res.send(500, err.message);
 
@@ -13,11 +13,11 @@ exports.executeRules = function(req, res) {
 
 export.executeRules = (req, res) => {
 	var R = rules.executeRules();
- //  R.execute(rules.fact,function(result){ 
-	// 	if(result.result) 
-	// 		console.log("\n-----Payment Accepted----\n"); 
-	// 	else 
-	// 		console.log("\n-----Payment Rejected----\n");
+  R.execute(rules.fact,function(result){ 
+		if(result.result) 
+			console.log("\n-----Payment Accepted----\n"); 
+		else 
+			console.log("\n-----Payment Rejected----\n");
 		
-	// });
+	});
 }
