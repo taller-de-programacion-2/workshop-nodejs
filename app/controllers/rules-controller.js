@@ -1,5 +1,4 @@
-//GET - Return all tvshows in the DB
-const Rules = require('../services/rules-services');
+const Rules = require('../services/rules-service');
 
 
 exports.test = function(req, res) {
@@ -11,7 +10,7 @@ exports.test = function(req, res) {
 	});
 };
 
-export.executeRules = (req, res) => {
+exports.executeRules = (req, res) => {
 	var R = rules.executeRules();
   R.execute(rules.fact,function(result){ 
 		if(result.result) 
