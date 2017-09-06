@@ -11,12 +11,8 @@ exports.test = function(req, res) {
 };
 
 exports.executeRules = (req, res) => {
-	var R = rules.executeRules();
-  R.execute(rules.fact,function(result){ 
-		if(result.result) 
-			console.log("\n-----Payment Accepted----\n"); 
-		else 
-			console.log("\n-----Payment Rejected----\n");
-		
-	});
+  Rules.execute()
+  .then((result) => {
+  	res.send(result)
+  })
 }
