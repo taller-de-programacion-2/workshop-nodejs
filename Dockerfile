@@ -1,11 +1,8 @@
-FROM node:8
+FROM node:boron
 
-ENV HOME=/home/app
+WORKDIR /home/app
 
-WORKDIR $HOME
-
-COPY app/package.json app/index.js $HOME/
-
+COPY app/package.json app/index.js app/rules.js ./
 
 RUN npm install
 

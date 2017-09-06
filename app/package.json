@@ -1,7 +1,7 @@
 {
   "name": "app",
   "version": "1.0.0",
-  "description": "Step 1",
+  "description": "Step 2",
   "main": "index.js",
   "scripts": {
     "start": "node index.js"
@@ -10,7 +10,8 @@
     "nodejs"
   ],
   "dependencies": {
-    "express": "^4.13.3"
+    "express": "^4.13.3",
+    "node-rules": "3.1.0"
   },
   "author": "agrojas",
   "license": "ISC"
