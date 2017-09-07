@@ -10,13 +10,13 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      rules: '',
-      facts: '',
+      rules: "[\n  {\n    \"condition\": function (R) {\n      R.when(this && (this.transactionTotal));\n    },\n    \"consequence\": function (R) {\n      this.result = true;\n      R.stop();\n    }\n  }\n]",
+      fact: "{\n  \"userIP\": \"27.3.4.5\",\n  \"name\": \"user4\",\n  \"application\": \"MOB2\",\n  \"userLoggedIn\": true,\n  \"transactionTotal\": 100,\n  \"cardType\": \"Credit Card\"\n}",
       result: '',
       loading: false,
     };
 
-    this.config = { mode: 'javascript', lineNumbers: true };
+    this.config = { mode: 'javascript', lineNumbers: true, tabSize: 2, indentWithTabs: true, };
   }
 
   updateText(container, text) {
@@ -48,7 +48,7 @@ class App extends Component {
       loading: true,
     });
 
-    const { rules, facts } = this.state;
+    const { rules, fact } = this.state;
 
     fetch('/api/rules/test', {
       method: 'POST',
@@ -57,22 +57,22 @@ class App extends Component {
       },
       body: JSON.stringify({
         rules,
-        facts,
+        fact: JSON.parse(fact),
       })
     })
       .then(r => {
         if (r.status >= 200 && r.status < 300)
-          r.json()
+          return r.json()
 
         return r.text()
           .then(t => ({
-            result: `Failed HTTP code: ${r.status}\nResponse:\n\n${t}`,
+            data: `Failed HTTP code: ${r.status}\nResponse:\n\n${t}`,
           }));
       })
       .then(json => {
         this.setState({
           ...this.state,
-          result: json.result,
+          result: JSON.stringify(json.data, null, 2),
         });
       })
       .catch(err => console.log(err))
@@ -83,7 +83,7 @@ class App extends Component {
   }
 
   render() {
-    const { rules, facts } = this.state;
+    const { rules, fact } = this.state;
     return (
       <div className="App">
         <div className="App-header">
@@ -95,9 +95,9 @@ class App extends Component {
         </p>
         <CodeMirror value={rules} options={this.config} onChange={text => this.updateText('rules', text)}/>
         <p className="App-intro">
-          Facts:
+          Fact:
         </p>
-        <CodeMirror value={facts} options={this.config} onChange={text => this.updateText('facts', text)}/>
+        <CodeMirror value={fact} options={this.config} onChange={text => this.updateText('fact', text)}/>
         <button onClick={() => this.runRules()}>Run</button>
         <p className="App-intro">
           Result:

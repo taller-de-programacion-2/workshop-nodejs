@@ -46,10 +46,13 @@ exports.addRule = (req, res) => {
 
 exports.testRules = (req, res) => {
   try {
-    const rules = req.body.rules.map(r => deserialize(r));
+    const rules = deserialize(req.body.rules);
+    console.log(rules);
     const fact = req.body.fact;
+    console.log(fact);
     Rules.test(rules, fact)
-      .then(r => res.json(buildResponse(r)));
+      .then(r => res.json(buildResponse(r)))
+      .catch(e => res.status(500).json(buildError(e)));
   } catch(e) {
     res.status(400)
       .json(buildError(e));

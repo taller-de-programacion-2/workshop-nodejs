@@ -1,5 +1,6 @@
 'use strict';
 
+const path = require('path');
 const express = require('express');
 const rulesController = require('./controllers/rules-controller');
 const bodyParser = require('body-parser');
@@ -28,6 +29,10 @@ rulesRouter.route('/rules')
 
 
 app.use("/api",rulesRouter);
+app.use(express.static(path.join(__dirname, 'public')));
+app.get('/*', (req, res) => {
+  res.sendfile('index.html', { root: path.join(__dirname, 'public') });
+});
 
 app.listen(PORT);
 console.log(`Running on port ${PORT}`);
