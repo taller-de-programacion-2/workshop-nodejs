@@ -5,19 +5,24 @@ var RuleEngine = require('node-rules');
 and on properties for this example as they are optional.*/ 
 
 //sample fact to run the rules on	
-var fact = {
+/*var fact = {
     "userIP": "27.3.4.5",
     "name":"user4",
     "application":"MOB2",
     "userLoggedIn":true,
     "transactionTotal":600,
     "cardType":"Credit Card",
-};
+};*/
+
 
 //define the rules
-var rules = [{
+var rules = [
+{
+	"name": "transaction minimum",
+	"priority": 3,
+	"on" : true,
 	"condition": function(R) {
-		R.when(this && (this.transactionTotal < 500));
+		R.when(this.transactionTotal < 500);
 	},
 	"consequence": function(R) {
 		this.result = false;
@@ -25,21 +30,41 @@ var rules = [{
 	}
 }];
 
+var RuleEngine = new RuleEngine(rules);
 
 var apply = (args, resolve) => {
-	var R = new RuleEngine(rules);
 	//Now pass the fact on to the rule engine for results
-	R.execute(fact,function(result){ 
-		var message = "Payment Rejected"; 
-		if(result.result) 
-			message = "Payment Accepted"; 
-		resolve(message)	
+	RuleEngine.execute(rules,function(result){ 
+		var response = {
+			data: "Payment Rejected",
+			status: false
+		}
+		console.log(result)
+		if(result.result) {
+			response.data = "Payment Accepted"; 
+			response.status = true;
+		} 
+		resolve(response)	
 	});
 }
 
 var getRules = (resolve) => {
-	resolve(rules)
+console.log(RuleEngine.toJSON())
+	var response = {
+			data:  RuleEngine.toJSON(),
+			status: true
+		}
+	resolve(response)
 };
+
+
+var addRule = (rule,resolve) => {
+	console.log(rule)
+	RuleEngine.fromJSON(rule);
+	getRules(resolve)
+};
+
+
 
 module.exports = {
 	execute: (args) => {
@@ -49,7 +74,7 @@ module.exports = {
 	},
 	addRule: (rule) => {
 		return new Promise((resolve, reject) => {
-			getRules(resolve)
+			addRule(rule,resolve)
 		})
 	},
 	getRules: () => {

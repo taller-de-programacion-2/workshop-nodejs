@@ -1,27 +1,30 @@
 const Rules = require('../services/rules-service');
 
+var getHTTPStatus = (status) => {
+	return (status) ? 200 : 400; 
+}
 
-var response  = {
-	status: 'OK',
-	data:{}
+var buildResponse = (data) => {
+	return {data:data}
+}
+
+var executeResponse = (response,result) => {
+	response.status(getHTTPStatus(result.status))
+			.json(buildResponse(result.data));
 }
 
 exports.executeRules = (req, res) => {
 	var args = req.body
 	Rules.execute(args)
 		.then((result) => {
-			response.data = result;
-	  		res.send(response)
+	  		executeResponse(res,result);
 	  	})
 }
 
 exports.getRules = (req, res) => {
 	Rules.getRules()
 		.then((result) => {
-			console.log(result)
-			response.data = result;
-			console.log(response)
-	  		res.json(response)
+			executeResponse(res,result);
 	  	})
 }
 
@@ -30,7 +33,6 @@ exports.addRule = (req, res) => {
   	var args = req.body
   	Rules.addRule(args)
 		.then((result) => {
-			response.data = result;
-	  		res.send(response)
+			executeResponse(res,result);
 	  	})
 }
