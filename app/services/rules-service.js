@@ -1,78 +1,70 @@
 //import the package
-var RuleEngine = require('node-rules');
+const RuleEngine = require('node-rules');
+
+/*as you can see above we removed the priority
+and on properties for this example as they are optional.*/
+
+//sample fact to run the rules on
+const fact = {
+  userIP: "27.3.4.5",
+  name: "user4",
+  application: "MOB2",
+  userLoggedIn: true,
+  transactionTotal: 600,
+  cardType: "Credit Card",
+};
 
 //define the rules
-var RuleManager = new RuleEngine();
-
-var rules = [
-{
-	"name": "transaction minimum",
-	"priority": 3,
-	"on" : true,
-	"condition": function(R) {
-		R.when(this.transactionTotal < 500);
-	},
-	"consequence": function(R) {
-		this.result = false;
-		R.stop();
-	}
+const rules = [{
+  condition: function (R) {
+    R.when(this && (this.transactionTotal < 500));
+  },
+  consequence: function (R) {
+    this.result = false;
+    R.stop();
+  }
 }];
 
-
-
-var init = () => {
-	RuleManager.init()
-	RuleManager.register(rules)
+const apply = (args, resolve) => {
+  const R = new RuleEngine(rules);
+  //Now pass the fact on to the rule engine for results
+  R.execute(args, result => {
+    let message = "Payment Rejected";
+    if(result.result)
+      message = "Payment Accepted";
+    resolve({
+      message,
+      fact: result,
+    });
+  });
 }
 
-var apply = (args, resolve) => {
-	//Now pass the fact on to the rule engine for results
-	RuleManager.execute(args,function(result){ 
-		console.log("apply-result",result)
-		var response = {
-			result: "Payment Rejected"
-		}
-		if(result.result) {
-			response.result = "Payment Accepted"; 
-		} 
-		resolve(response)	
-	});
-}
-
-var getRules = (resolve) => {
-	var response = {
-			rules:  RuleManager.findRules()
-		}
-	console.log("rules",rules)
-	resolve(response)
+const getRules = resolve => {
+  resolve(rules);
 };
-
-
-var addRule = (rule,resolve) => {
-	RuleManager.register(rule);
-	rules.push(rule)
-	getRules(resolve)
-};
-
-/*  INIT */
-init();
 
 module.exports = {
-
-	execute: (args) => {
-		return new Promise((resolve, reject) => {
-			apply(args,resolve)
-		})
-	},
-	addRule: (rule) => {
-		return new Promise((resolve, reject) => {
-			addRule(rule,resolve)
-		})
-	},
-	getRules: () => {
-		return new Promise((resolve, reject) => {
-			getRules(resolve)
-		})
-	}
-
-}
+  execute: (args) => {
+    return new Promise((resolve, reject) => {
+      apply(args, resolve)
+    })
+  },
+  addRule: (rule) => {
+    rules.push(rule);
+    return new Promise((resolve, reject) => {
+      getRules(resolve)
+    })
+  },
+  getRules: () => {
+    return new Promise((resolve, reject) => {
+      getRules(resolve)
+    })
+  },
+  test: (rules, fact) => {
+    return new Promise(rs => {
+      const R = new RuleEngine();
+      R.fromJSON(rules);
+      R.execute(fact, r => rs(r));
+    });
+  },
+};

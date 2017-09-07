@@ -17,15 +17,16 @@ exports.executeRules = (req, res) => {
   Rules.execute(args)
     .then(r => {
       console.log(r);
-      res.json(buildResponse(serialize(r)))
+      res.send(buildResponse(r))
     });
 }
 
 exports.getRules = (req, res) => {
-  console.log('getRules')
   Rules.getRules()
     .then(result => {
-      const response = buildResponse(serialize(result));
+      console.log(result)
+      const response = buildResponse(result.map(r => serialize(r)));
+      console.log(response)
       res.json(response)
     });
 }
@@ -35,10 +36,26 @@ exports.addRule = (req, res) => {
     const args = deserialize(req.body.rule);
     Rules.addRule(args)
       .then(r => {
-        res.json(buildResponse(serialize(r)));
+        res.json(buildResponse(r.map(r => serialize(r))));
       });
   } catch(e) {
     res.status(400)
       .json(buildError(e));
   }
 }
+
+exports.testRules = (req, res) => {
+  try {
+    const rules = deserialize(req.body.rules);
+    console.log(rules);
+    const fact = req.body.fact;
+    console.log(fact);
+    Rules.test(rules, fact)
+      .then(r => res.json(buildResponse(r)))
+      .catch(e => res.status(500).json(buildError(e)));
+  } catch(e) {
+    res.status(400)
+      .json(buildError(e));
+  }
+};
+
