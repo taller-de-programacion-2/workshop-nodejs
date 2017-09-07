@@ -49,7 +49,6 @@ var apply = (args, resolve) => {
 }
 
 var getRules = (resolve) => {
-console.log(RuleEngine.toJSON())
 	var response = {
 			data:  RuleEngine.toJSON(),
 			status: true
@@ -59,7 +58,6 @@ console.log(RuleEngine.toJSON())
 
 
 var addRule = (rule,resolve) => {
-	console.log(rule)
 	RuleEngine.fromJSON(rule);
 	getRules(resolve)
 };
