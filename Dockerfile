@@ -8,8 +8,8 @@ RUN yarn install
 
 COPY . ./
 
-RUN yarn build:web
+RUN yarn build
 
 EXPOSE 8080
 
-CMD ["yarn","start:app"]
+CMD ["yarn","start"]

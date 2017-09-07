@@ -7,10 +7,10 @@
     "start": "node app/index.js"
   },
   "scripts": {
-    "start": "yarn start:app & yarn start:web",
-    "start:app": "node app/index.js",
+    "start:dev": "yarn start:web & yarn start",
+    "start": "node app/index.js",
     "start:web": "react-scripts start",
-    "build:web": "react-scripts build",
+    "build": "react-scripts build",
     "test:web": "react-scripts test --env=jsdom",
     "eject:web": "react-scripts eject"
   },

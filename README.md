@@ -35,16 +35,16 @@ $ docker build -t <image-name> .
 
 ### Ejecución
 
-#### Ejecución mediante npm
+#### Ejecución mediante `yarn`
 
 ```
-$ yarn start
+$ yarn start:dev
 ```
 ó
 
 ```
 $ yarn build
-$ yarn start:app
+$ yarn start
 ```
 
 #### Ejecución mediante docker
