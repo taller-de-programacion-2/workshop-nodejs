@@ -60,4 +60,11 @@ module.exports = {
       getRules(resolve)
     })
   },
+  test: (rules, fact) => {
+    return new Promise(rs => {
+      const R = new RuleEngine();
+      R.fromJSON(rules);
+      R.execute(fact, r => rs(r));
+    });
+  },
 };
