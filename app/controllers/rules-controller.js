@@ -1,38 +1,45 @@
 const Rules = require('../services/rules-service');
+const serialize = require('serialize-javascript');
+const deserialize = str => eval(`(${str})`);
 
-var getHTTPStatus = (status) => {
-	return (status) ? 200 : 400; 
-}
+const buildResponse = data => ({
+  status: 'OK',
+  data,
+});
 
-var buildResponse = (data) => {
-	return {data:data}
-}
-
-var executeResponse = (response,result) => {
-	response.status(getHTTPStatus(result.status))
-			.json(buildResponse(result.data));
-}
+const buildError = err => ({
+  status: 'ERROR',
+  error: err.toString(),
+});
 
 exports.executeRules = (req, res) => {
-	var args = req.body
-	Rules.execute(args)
-		.then((result) => {
-	  		executeResponse(res,result);
-	  	})
+  const args = req.body
+  Rules.execute(args)
+    .then(r => {
+      console.log(r);
+      res.send(buildResponse(r))
+    });
 }
 
 exports.getRules = (req, res) => {
-	Rules.getRules()
-		.then((result) => {
-			executeResponse(res,result);
-	  	})
+  Rules.getRules()
+    .then(result => {
+      console.log(result)
+      const response = buildResponse(result.map(r => serialize(r)));
+      console.log(response)
+      res.json(response)
+    });
 }
 
-
 exports.addRule = (req, res) => {
-  	var args = req.body
-  	Rules.addRule(args)
-		.then((result) => {
-			executeResponse(res,result);
-	  	})
+  try {
+    const args = deserialize(req.body.rule);
+    Rules.addRule(args)
+      .then(r => {
+        res.json(buildResponse(r.map(r => serialize(r))));
+      });
+  } catch(e) {
+    res.status(400)
+      .json(buildError(e));
+  }
 }

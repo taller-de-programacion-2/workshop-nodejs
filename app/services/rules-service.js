@@ -65,6 +65,7 @@ var addRule = (rule,resolve) => {
 
 
 module.exports = {
+
 	execute: (args) => {
 		return new Promise((resolve, reject) => {
 			apply(args,resolve)
