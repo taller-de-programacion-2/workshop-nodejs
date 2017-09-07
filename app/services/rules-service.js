@@ -1,16 +1,6 @@
 //import the package
 var RuleEngine = require('node-rules');
 
-//define the rules
-var rules = [{
-	"condition": function(R) {
-		R.when(this && (this.transactionTotal < 500));
-	},
-	"consequence": function(R) {
-		this.result = false;
-		R.stop();
-	}
-}];
 /*as you can see above we removed the priority 
 and on properties for this example as they are optional.*/ 
 
@@ -24,34 +14,48 @@ var fact = {
     "cardType":"Credit Card",
 };
 
+//define the rules
+var rules = [{
+	"condition": function(R) {
+		R.when(this && (this.transactionTotal < 500));
+	},
+	"consequence": function(R) {
+		this.result = false;
+		R.stop();
+	}
+}];
 
-var aplicar = (args, resolve) => {
-	console.log("Calling aplicar ",args);
+
+var apply = (args, resolve) => {
 	var R = new RuleEngine(rules);
 	//Now pass the fact on to the rule engine for results
 	R.execute(fact,function(result){ 
-		console.log(result);
-		var message = "\n-----Payment Rejected----\n"; 
+		var message = "Payment Rejected"; 
 		if(result.result) 
-			message = "\n-----Payment Accepted----\n"; 
-		console.log(message);
+			message = "Payment Accepted"; 
 		resolve(message)	
 	});
 }
 
-module.exports = {
-	
-	execute: (args) => {
-		console.log("Calling execute");
-		var promise = new Promise((resolve, reject) => {
-			console.log("Calling promise");
-			aplicar(args,resolve)
-		})
+var getRules = (resolve) => {
+	resolve(rules)
+};
 
-		return promise;
+module.exports = {
+	execute: (args) => {
+		return new Promise((resolve, reject) => {
+			apply(args,resolve)
+		})
+	},
+	addRule: (rule) => {
+		return new Promise((resolve, reject) => {
+			getRules(resolve)
+		})
 	},
 	getRules: () => {
-		return fact;
+		return new Promise((resolve, reject) => {
+			getRules(resolve)
+		})
 	}
 
 }
