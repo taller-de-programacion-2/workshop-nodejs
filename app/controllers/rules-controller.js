@@ -17,16 +17,17 @@ exports.executeRules = (req, res) => {
   Rules.execute(args)
     .then(r => {
       console.log(r);
-      res.send(buildResponse(r))
+      res.json(buildResponse(r))
     });
 }
 
 exports.getRules = (req, res) => {
+  console.log('getRules')
   Rules.getRules()
     .then(result => {
-      console.log(result)
-      const response = buildResponse(result.map(r => serialize(r)));
-      console.log(response)
+      console.log('result',result)
+      const response = buildResponse(result);
+      console.log('response',response)
       res.json(response)
     });
 }
@@ -36,7 +37,7 @@ exports.addRule = (req, res) => {
     const args = deserialize(req.body.rule);
     Rules.addRule(args)
       .then(r => {
-        res.json(buildResponse(r.map(r => serialize(r))));
+        res.json(buildResponse(r));
       });
   } catch(e) {
     res.status(400)

@@ -1,21 +1,9 @@
 //import the package
 var RuleEngine = require('node-rules');
 
-/*as you can see above we removed the priority 
-and on properties for this example as they are optional.*/ 
-
-//sample fact to run the rules on	
-/*var fact = {
-    "userIP": "27.3.4.5",
-    "name":"user4",
-    "application":"MOB2",
-    "userLoggedIn":true,
-    "transactionTotal":600,
-    "cardType":"Credit Card",
-};*/
-
-
 //define the rules
+var RuleManager = new RuleEngine();
+
 var rules = [
 {
 	"name": "transaction minimum",
@@ -30,19 +18,22 @@ var rules = [
 	}
 }];
 
-var RuleEngine = new RuleEngine(rules);
+
+
+var init = () => {
+	RuleManager.register(rules)
+}
 
 var apply = (args, resolve) => {
+	console.log("apply",args)
 	//Now pass the fact on to the rule engine for results
-	RuleEngine.execute(rules,function(result){ 
+	RuleManager.execute(args,function(result){ 
+		console.log("apply-result",result)
 		var response = {
-			data: "Payment Rejected",
-			status: false
+			result: "Payment Rejected"
 		}
-		console.log(result)
 		if(result.result) {
-			response.data = "Payment Accepted"; 
-			response.status = true;
+			response.result = "Payment Accepted"; 
 		} 
 		resolve(response)	
 	});
@@ -50,19 +41,21 @@ var apply = (args, resolve) => {
 
 var getRules = (resolve) => {
 	var response = {
-			data:  RuleEngine.toJSON(),
-			status: true
+			rules:  RuleManager.toJSON()
 		}
 	resolve(response)
 };
 
 
 var addRule = (rule,resolve) => {
-	RuleEngine.fromJSON(rule);
+	rules.push(rule)
+	//TODO
+	RuleManager.register(rule);
 	getRules(resolve)
 };
 
-
+/*  INIT */
+init();
 
 module.exports = {
 
