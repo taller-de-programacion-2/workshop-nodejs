@@ -28,7 +28,7 @@ const rules = [{
 const apply = (args, resolve) => {
   const R = new RuleEngine(rules);
   //Now pass the fact on to the rule engine for results
-  R.execute(fact, result => {
+  R.execute(args, result => {
     let message = "Payment Rejected";
     if(result.result)
       message = "Payment Accepted";
