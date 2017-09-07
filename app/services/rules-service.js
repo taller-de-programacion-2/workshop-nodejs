@@ -1,63 +1,85 @@
 //import the package
-const RuleEngine = require('node-rules');
+var RuleEngine = require('node-rules');
 
-/*as you can see above we removed the priority
-and on properties for this example as they are optional.*/
+/*as you can see above we removed the priority 
+and on properties for this example as they are optional.*/ 
 
-//sample fact to run the rules on
-const fact = {
-  userIP: "27.3.4.5",
-  name: "user4",
-  application: "MOB2",
-  userLoggedIn: true,
-  transactionTotal: 600,
-  cardType: "Credit Card",
-};
+//sample fact to run the rules on	
+/*var fact = {
+    "userIP": "27.3.4.5",
+    "name":"user4",
+    "application":"MOB2",
+    "userLoggedIn":true,
+    "transactionTotal":600,
+    "cardType":"Credit Card",
+};*/
+
 
 //define the rules
-const rules = [{
-  condition: function (R) {
-    R.when(this && (this.transactionTotal < 500));
-  },
-  consequence: function (R) {
-    this.result = false;
-    R.stop();
-  }
+var rules = [
+{
+	"name": "transaction minimum",
+	"priority": 3,
+	"on" : true,
+	"condition": function(R) {
+		R.when(this.transactionTotal < 500);
+	},
+	"consequence": function(R) {
+		this.result = false;
+		R.stop();
+	}
 }];
 
-const apply = (args, resolve) => {
-  const R = new RuleEngine(rules);
-  //Now pass the fact on to the rule engine for results
-  R.execute(fact, result => {
-    let message = "Payment Rejected";
-    if(result.result)
-      message = "Payment Accepted";
-    resolve({
-      message,
-      fact: result,
-    });
-  });
+var RuleEngine = new RuleEngine(rules);
+
+var apply = (args, resolve) => {
+	//Now pass the fact on to the rule engine for results
+	RuleEngine.execute(rules,function(result){ 
+		var response = {
+			data: "Payment Rejected",
+			status: false
+		}
+		console.log(result)
+		if(result.result) {
+			response.data = "Payment Accepted"; 
+			response.status = true;
+		} 
+		resolve(response)	
+	});
 }
 
-const getRules = resolve => {
-  resolve(rules);
+var getRules = (resolve) => {
+	var response = {
+			data:  RuleEngine.toJSON(),
+			status: true
+		}
+	resolve(response)
 };
 
-module.exports = {
-  execute: (args) => {
-    return new Promise((resolve, reject) => {
-      apply(args, resolve)
-    })
-  },
-  addRule: (rule) => {
-    rules.push(rule);
-    return new Promise((resolve, reject) => {
-      getRules(resolve)
-    })
-  },
-  getRules: () => {
-    return new Promise((resolve, reject) => {
-      getRules(resolve)
-    })
-  },
+
+var addRule = (rule,resolve) => {
+	RuleEngine.fromJSON(rule);
+	getRules(resolve)
 };
+
+
+
+module.exports = {
+
+	execute: (args) => {
+		return new Promise((resolve, reject) => {
+			apply(args,resolve)
+		})
+	},
+	addRule: (rule) => {
+		return new Promise((resolve, reject) => {
+			addRule(rule,resolve)
+		})
+	},
+	getRules: () => {
+		return new Promise((resolve, reject) => {
+			getRules(resolve)
+		})
+	}
+
+}
