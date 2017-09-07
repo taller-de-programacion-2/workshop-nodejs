@@ -21,11 +21,11 @@ var rules = [
 
 
 var init = () => {
+	RuleManager.init()
 	RuleManager.register(rules)
 }
 
 var apply = (args, resolve) => {
-	console.log("apply",args)
 	//Now pass the fact on to the rule engine for results
 	RuleManager.execute(args,function(result){ 
 		console.log("apply-result",result)
@@ -41,16 +41,16 @@ var apply = (args, resolve) => {
 
 var getRules = (resolve) => {
 	var response = {
-			rules:  RuleManager.toJSON()
+			rules:  RuleManager.findRules()
 		}
+	console.log("rules",rules)
 	resolve(response)
 };
 
 
 var addRule = (rule,resolve) => {
-	rules.push(rule)
-	//TODO
 	RuleManager.register(rule);
+	rules.push(rule)
 	getRules(resolve)
 };
 
