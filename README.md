@@ -2,17 +2,52 @@
 
 Repositorio para workshop de NodeJS + heroku
 
-## Step 1
+API para validación utilizando motor de reglas.
 
 ### Pre requisitos
 
-- Se requiere tener instalado docker
-- Se requiere tener instalado docker-compose
+- Contar con npm o docker.
 
 ```
+$ npm -v
+```
+
+
+```
+$ docker -v
 ```
 
 ### Instalación
+
+#### Instalación mediante npm
+
 ```
-$ docker-compose up
+$ cd app/ && npm install
 ```
+
+#### Instalación mediante docker
+
+```
+$ docker build -t <image-name> .
+```
+
+### Ejecución
+
+#### Ejecución mediante npm
+
+```
+$ cd app/ && npm start
+```
+ó
+
+```
+$ cd app/ && node index.js
+```
+
+#### Ejecución mediante docker
+
+
+```
+$ docker run -p 49160:8080 -d <image-name>
+```
+
