@@ -1,0 +1,7 @@
+{
+  "name": "workshop-3",
+  "version": "0.1.0",
+  "scripts": {
+    "postinstall": "npm install --prefix app && npm install --prefix web"
+  }
+}
