@@ -4,15 +4,14 @@
   "description": "Step 3",
   "main": "index.js",
   "scripts": {
-    "start": "node app/index.js"
-  },
-  "scripts": {
     "start:dev": "yarn start:web & yarn start",
     "start": "node app/index.js",
     "start:web": "react-scripts start",
     "build": "react-scripts build",
     "test:web": "react-scripts test --env=jsdom",
-    "eject:web": "react-scripts eject"
+    "eject:web": "react-scripts eject",
+    "format": "prettier --trailing-comma es5 --single-quote --write `find {src,app} -name '*.js'`",
+    "lint": "eslint {src,app}"
   },
   "keywords": [
     "nodejs"
@@ -21,13 +20,21 @@
     "body-parser": "1.17.2",
     "express": "^4.13.3",
     "node-rules": "3.1.0",
-    "serialize-javascript": "^1.4.0",
     "react": "^15.6.1",
     "react-codemirror": "^1.0.0",
     "react-dom": "^15.6.1",
-    "react-scripts": "1.0.13"
+    "react-scripts": "1.0.13",
+    "serialize-javascript": "^1.4.0"
   },
   "proxy": "http://localhost:8080",
   "author": "agrojas",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "eslint": "^4.6.1",
+    "eslint-config-google": "^0.9.1",
+    "eslint-config-prettier": "^2.4.0",
+    "eslint-plugin-prettier": "^2.2.0",
+    "eslint-plugin-react": "^7.3.0",
+    "prettier": "^1.6.1"
+  }
 }

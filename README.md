@@ -2,7 +2,7 @@
 
 Repositorio para workshop de NodeJS + heroku
 
-## Step 3
+## Step 4
 
 API para validación utilizando motor de reglas.
 
@@ -14,41 +14,15 @@ API para validación utilizando motor de reglas.
 $ yarn -v
 ```
 
-
-```
-$ docker -v
-```
-
 ### Instalación
-
-#### Instalación mediante npm
 
 ```
 $ yarn install
 ```
 
-#### Instalación mediante docker
+### Static checks
 
 ```
-$ docker build -t <image-name> .
-```
-
-### Ejecución
-
-#### Ejecución mediante `yarn`
-
-```
-$ yarn start:dev
-```
-ó
-
-```
-$ yarn build
-$ yarn start
-```
-
-#### Ejecución mediante docker
-
-```
-$ docker run -p 49160:8080 -d <image-name>
+$ yarn format
+$ yarn lint
 ```
