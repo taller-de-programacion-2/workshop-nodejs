@@ -2,18 +2,14 @@ FROM node:boron
 
 WORKDIR /home/app
 
-COPY app/ ./
+COPY package.json yarn.lock ./
 
 RUN yarn install
 
-COPY web ./web
+COPY . ./
 
-RUN cd web && \
-    yarn install && \
-    yarn build && \
-    cp -r build ../public && \
-    cd -
+RUN yarn build:web
 
 EXPOSE 8080
 
-CMD ["yarn","start"]
+CMD ["yarn","start:app"]

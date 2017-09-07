@@ -30,9 +30,9 @@ rulesRouter.route('/rules')
 
 
 app.use("/api",rulesRouter);
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, '..', 'build')));
 app.get('/*', (req, res) => {
-  res.sendfile('index.html', { root: path.join(__dirname, 'public') });
+  res.sendfile('index.html', { root: path.join(__dirname, '..', 'build') });
 });
 
 app.listen(PORT);

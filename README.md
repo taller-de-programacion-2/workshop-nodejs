@@ -2,16 +2,16 @@
 
 Repositorio para workshop de NodeJS + heroku
 
-## Step 2
+## Step 3
 
 API para validación utilizando motor de reglas.
 
 ### Pre requisitos
 
-- Contar con npm o docker.
+- Contar con yarn o docker.
 
 ```
-$ npm -v
+$ yarn -v
 ```
 
 
@@ -24,7 +24,7 @@ $ docker -v
 #### Instalación mediante npm
 
 ```
-$ cd app/ && npm install
+$ yarn install
 ```
 
 #### Instalación mediante docker
@@ -38,16 +38,16 @@ $ docker build -t <image-name> .
 #### Ejecución mediante npm
 
 ```
-$ cd app/ && npm start
+$ yarn start
 ```
 ó
 
 ```
-$ cd app/ && node index.js
+$ yarn build
+$ yarn start:app
 ```
 
 #### Ejecución mediante docker
-
 
 ```
 $ docker run -p 49160:8080 -d <image-name>

@@ -1,1 +1,2 @@
-web: npm start --prefix app
+web: node index.js
+

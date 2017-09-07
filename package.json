@@ -1,7 +1,33 @@
 {
-  "name": "workshop-3",
-  "version": "0.1.0",
+  "name": "app",
+  "version": "1.0.1",
+  "description": "Step 3",
+  "main": "index.js",
   "scripts": {
-    "postinstall": "npm install --prefix app && npm install --prefix web"
-  }
+    "start": "node app/index.js"
+  },
+  "scripts": {
+    "start": "yarn start:app & yarn start:web",
+    "start:app": "node app/index.js",
+    "start:web": "react-scripts start",
+    "build:web": "react-scripts build",
+    "test:web": "react-scripts test --env=jsdom",
+    "eject:web": "react-scripts eject"
+  },
+  "keywords": [
+    "nodejs"
+  ],
+  "dependencies": {
+    "body-parser": "1.17.2",
+    "express": "^4.13.3",
+    "node-rules": "3.1.0",
+    "serialize-javascript": "^1.4.0",
+    "react": "^15.6.1",
+    "react-codemirror": "^1.0.0",
+    "react-dom": "^15.6.1",
+    "react-scripts": "1.0.13"
+  },
+  "proxy": "http://localhost:8080",
+  "author": "agrojas",
+  "license": "ISC"
 }
