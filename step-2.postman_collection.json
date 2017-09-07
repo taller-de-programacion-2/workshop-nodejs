@@ -1,0 +1,53 @@
+{
+	"variables": [],
+	"info": {
+		"name": "Step 2",
+		"_postman_id": "73dbd301-b3db-1c2e-5017-684d21dbeed5",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get Rules",
+			"request": {
+				"url": "localhost:8080/api/rules",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Add rule",
+			"request": {
+				"url": "localhost:8080/api/rules",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"rule\": \"{\\\"condition\\\":function (R) {\\n    R.when(this && (this.transactionTotal < 500));\\n  },\\\"consequence\\\":function (R) {\\n    this.result = false;\\n    R.stop();\\n  }}\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Run rules",
+			"request": {
+				"url": "localhost:8080/api/rules/run",
+				"method": "POST",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}
